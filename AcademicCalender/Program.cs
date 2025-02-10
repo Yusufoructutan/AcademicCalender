@@ -1,4 +1,4 @@
-using AcademicCalender.Business;
+﻿using AcademicCalender.Business;
 using AcademicCalender.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +9,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllers();
+
+// CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // React uygulamanızın URL'si
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+
 
 // Configure DbContext with a connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -89,5 +102,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+// Use CORS
+app.UseCors("AllowReactApp");
 
 app.Run();

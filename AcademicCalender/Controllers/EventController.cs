@@ -47,7 +47,8 @@ public class EventController : ControllerBase
             Description = createEventDto.Description,
             StartDate = createEventDto.StartDate,
             EndDate = createEventDto.EndDate,
-            CalendarID = createEventDto.CalendarID
+            CalendarID = createEventDto.CalendarID,
+            color = createEventDto.color
         };
 
         await _eventService.AddEventAsync(newEvent);
@@ -57,16 +58,33 @@ public class EventController : ControllerBase
 
     // Event Güncelle
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateEvent(int id, [FromBody] Event eventItem)
+    public async Task<IActionResult> UpdateEvent(int id, [FromBody] UpdateEventDto updateEventDto)
     {
-        if (id != eventItem.EventID)
+        // Event var mı kontrol et
+        var existingEvent = await _eventService.GetEventByIdAsync(id);
+        if (existingEvent == null)
+        {
+            return NotFound($"Event with ID {id} not found.");
+        }
+
+        // ID doğrulaması (isteğe bağlı, DTO'da ID olmayabilir)
+        if (id != existingEvent.EventID)
         {
             return BadRequest("Event ID mismatch.");
         }
 
-        await _eventService.UpdateEventAsync(eventItem);
+        // Güncelleme işlemleri
+        existingEvent.Title = updateEventDto.Title;
+        existingEvent.Description = updateEventDto.Description;
+        existingEvent.StartDate = updateEventDto.StartDate;
+        existingEvent.EndDate = updateEventDto.EndDate;
+        existingEvent.color = updateEventDto.color; // DTO'da yeni alan
+        
+        // Event'i güncelle
+        await _eventService.UpdateEventAsync(existingEvent);
         return NoContent();
     }
+
 
     // Event Sil
     [HttpDelete("{id}")]

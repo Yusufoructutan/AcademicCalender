@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AcademicCalender.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241230140947_UpdateFixed")]
-    partial class UpdateFixed
+    [Migration("20250104132330_updatedColor")]
+    partial class updatedColor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,6 +106,10 @@ namespace AcademicCalender.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("EventID");
 

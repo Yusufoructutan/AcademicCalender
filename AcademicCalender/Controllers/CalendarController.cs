@@ -32,7 +32,8 @@ public class CalendarController : ControllerBase
                 Title = e.Title,
                 Description = e.Description,
                 StartDate = e.StartDate,
-                EndDate = e.EndDate
+                EndDate = e.EndDate,
+                color= e.color
             }).ToList() ?? new List<EventDto>()
         }).ToList();
 
@@ -62,7 +63,8 @@ public class CalendarController : ControllerBase
                 Title = e.Title,
                 Description = e.Description,
                 StartDate = e.StartDate,
-                EndDate = e.EndDate
+                EndDate = e.EndDate,
+                color=e.color
             }).ToList() ?? new List<EventDto>()
         };
 
